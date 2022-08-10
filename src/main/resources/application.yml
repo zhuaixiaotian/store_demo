@@ -1,0 +1,22 @@
+
+#指定Mybatis的Mapper文件
+#spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
+## 数据库连接地址
+#spring.datasource.url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC
+## 数据库用户名&密码：
+#spring.datasource.username: root
+#spring.datasource.password: 123456
+##spring:
+##  datasource:
+##    type: com.alibaba.druid.pool.DruidDataSource
+#
+server:
+  port: 81
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC
+      username: root
+      password: 123456
+      name: defaultDataSource
