@@ -11,12 +11,14 @@
 ##    type: com.alibaba.druid.pool.DruidDataSource
 #
 server:
-  port: 81
+  port: 8080
 spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/store?serverTimezone=UTC
       username: root
       password: 123456
       name: defaultDataSource
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
