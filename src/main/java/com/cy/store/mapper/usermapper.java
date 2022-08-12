@@ -12,6 +12,6 @@ public interface usermapper {
     Integer insert(User user);
     User findByUid (@Param("uid") Integer uid);
     Integer updatePasswordbyUid (@Param("uid") Integer uid, @Param("password") String password, @Param("modifier") String modifier, @Param("modifiedDate") Date modifiedDate);
-   void   updateinfobyuid(User user);
-
+   Integer  updateinfobyuid(User user);
+    Integer updateAvatarbyuid(@Param("uid") Integer uid, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime , @Param("avatar") String avatar);
 }

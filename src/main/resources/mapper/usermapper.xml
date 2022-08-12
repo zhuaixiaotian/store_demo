@@ -62,15 +62,7 @@
 
 
 
-    <update id="updateAvatarByUid">
-        update t_user
-        set
-            avatar = #{avatar},
-            modified_user = #{modifiedUser},
-            modified_time = #{modifiedTime}
-        where
-            uid = #{uid}
-    </update>
+
     <update id="updatePasswordbyUid">
 
     update   t_user  set password=#{password}, modified_user=#{modifier} ,modified_time=#{modifiedDate}
@@ -91,6 +83,18 @@
         modified_user = #{modifiedUser},
         modified_time = #{modifiedTime}
         where uid=#{uid}
+
+    </update>
+    <update id="updateAvatarbyuid">
+
+        update t_user
+        set
+            avatar = #{avatar},
+            modified_user = #{modifiedUser},
+            modified_time = #{modifiedTime}
+        where
+            uid = #{uid}
+
 
     </update>
 </mapper>
