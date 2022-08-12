@@ -1,8 +1,6 @@
 package com.cy.store.controller;
 
-import com.cy.store.entity.User;
-import com.cy.store.service.IUserService;
-import com.cy.store.util.jsonresult;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,29 +9,29 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/users")
-public class usercontroller extends basecontroller {
+public class usercontroller extends com.cy.store.controller.basecontroller {
 
     @Autowired
-    private IUserService userService;
+    private com.cy.store.service.IUserService userService;
 
     @RequestMapping("/reg")
-    public jsonresult<Void> register(User user)
+    public com.cy.store.util.jsonresult<Void> register(com.cy.store.entity.User user)
     {
 
 
             userService.register(user);
-        return  new jsonresult<Void>(ok);
+        return  new com.cy.store.util.jsonresult<Void>(ok);
 
     }
 
     @RequestMapping("/login")
-    public jsonresult<User> login(String username, String password, HttpSession session)
+    public com.cy.store.util.jsonresult<com.cy.store.entity.User> login(String username, String password, HttpSession session)
 
     {
         System.out.println(username);
-        User login = userService.login(username, password);
+        com.cy.store.entity.User login = userService.login(username, password);
         System.out.println("登陆成功");
-        jsonresult<User> userjsonresult = new jsonresult<>();
+        com.cy.store.util.jsonresult<com.cy.store.entity.User> userjsonresult = new com.cy.store.util.jsonresult<>();
         userjsonresult.setData(login);
         userjsonresult.setState(ok);
         userjsonresult.setMsg("登陆成功");
@@ -44,35 +42,35 @@ public class usercontroller extends basecontroller {
 
 
     @RequestMapping("/change_password")
-    public  jsonresult<Void>  changePassword(String oldPassword,String newPassword,HttpSession session)
+    public com.cy.store.util.jsonresult<Void> changePassword(String oldPassword, String newPassword, HttpSession session)
     {
         String username = getnamesession(session);
         Integer uid =getuidsession(session);
         System.out.println(username);
         System.out.println(uid);
         userService.changePassword(uid,username,oldPassword,newPassword);
-        return  new jsonresult<Void>(ok,"改密码成功");
+        return  new com.cy.store.util.jsonresult<Void>(ok,"改密码成功");
 
 
 
     }
     @RequestMapping("/getbyuid")
-    public  jsonresult<User> getUserByUId(HttpSession ssession)
+    public com.cy.store.util.jsonresult<com.cy.store.entity.User> getUserByUId(HttpSession ssession)
     {
-        User getbyuid = userService.getbyuid(getuidsession(ssession));
-        return  new jsonresult<User>(getbyuid,200);
+        com.cy.store.entity.User getbyuid = userService.getbyuid(getuidsession(ssession));
+        return  new com.cy.store.util.jsonresult<com.cy.store.entity.User>(getbyuid,200);
 
     }
 
 
     @RequestMapping("/changeinfo")
-    public  jsonresult<Void> changeInfo(HttpSession session ,User user)
+    public com.cy.store.util.jsonresult<Void> changeInfo(HttpSession session , com.cy.store.entity.User user)
 
     {
         Integer uid = getuidsession(session);
         String username=getnamesession(session);
         userService.changeinfo(user,uid,username);
-        return  new jsonresult<Void>(ok);
+        return  new com.cy.store.util.jsonresult<Void>(ok);
 
 
     }
