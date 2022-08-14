@@ -34,7 +34,7 @@ public class usermappertests {
     @Test
     public  void q()
     {
-        System.out.println(usermapper.findByUid(10));
+        System.out.println(usermapper.findByUid(9));
 
 
     }

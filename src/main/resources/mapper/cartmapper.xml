@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.store.mapper.cartmapper">
+
+
+    <insert id="insert">
+        insert into t_cart  values
+                (null ,#{uid}, #{pid}, #{price}, #{num}, #{createdUser},
+                #{createdTime}, #{modifiedUser}, #{modifiedTime})
+
+    </insert>
+    <update id="updatenumbycid">
+
+        update t_cart set
+                          num=#{num},
+                          modified_user=#{modifiedUser},
+                          modified_time=#{modifiedTime}
+        where cid=#{cid}
+    </update>
+
+
+    <select id="findById" resultType="com.cy.store.entity.Cart">
+
+        select * from t_cart where uid=#{uid} AND pid=#{pid}
+
+    </select>
+</mapper>
+

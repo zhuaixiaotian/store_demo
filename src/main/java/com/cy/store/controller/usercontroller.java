@@ -1,21 +1,32 @@
 package com.cy.store.controller;
 
 
+import com.cy.store.controller.ex.*;
+import com.cy.store.entity.User;
+import com.cy.store.service.IUserService;
+import com.cy.store.util.jsonresult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
 public class usercontroller extends com.cy.store.controller.basecontroller {
 
     @Autowired
-    private com.cy.store.service.IUserService userService;
+    private IUserService userService;
 
     @RequestMapping("/reg")
-    public com.cy.store.util.jsonresult<Void> register(com.cy.store.entity.User user)
+    public jsonresult<Void> register(User user)
     {
 
 
@@ -25,7 +36,7 @@ public class usercontroller extends com.cy.store.controller.basecontroller {
     }
 
     @RequestMapping("/login")
-    public com.cy.store.util.jsonresult<com.cy.store.entity.User> login(String username, String password, HttpSession session)
+    public jsonresult<com.cy.store.entity.User> login(String username, String password, HttpSession session)
 
     {
         System.out.println(username);
@@ -42,7 +53,7 @@ public class usercontroller extends com.cy.store.controller.basecontroller {
 
 
     @RequestMapping("/change_password")
-    public com.cy.store.util.jsonresult<Void> changePassword(String oldPassword, String newPassword, HttpSession session)
+    public jsonresult<Void> changePassword(String oldPassword, String newPassword, HttpSession session)
     {
         String username = getnamesession(session);
         Integer uid =getuidsession(session);
@@ -55,7 +66,7 @@ public class usercontroller extends com.cy.store.controller.basecontroller {
 
     }
     @RequestMapping("/getbyuid")
-    public com.cy.store.util.jsonresult<com.cy.store.entity.User> getUserByUId(HttpSession ssession)
+    public jsonresult<com.cy.store.entity.User> getUserByUId(HttpSession ssession)
     {
         com.cy.store.entity.User getbyuid = userService.getbyuid(getuidsession(ssession));
         return  new com.cy.store.util.jsonresult<com.cy.store.entity.User>(getbyuid,200);
@@ -64,16 +75,82 @@ public class usercontroller extends com.cy.store.controller.basecontroller {
 
 
     @RequestMapping("/changeinfo")
-    public com.cy.store.util.jsonresult<Void> changeInfo(HttpSession session , com.cy.store.entity.User user)
+    public jsonresult<Void> changeInfo(HttpSession session , com.cy.store.entity.User user)
 
     {
         Integer uid = getuidsession(session);
         String username=getnamesession(session);
         userService.changeinfo(user,uid,username);
+        System.out.println("修改信息成功");
         return  new com.cy.store.util.jsonresult<Void>(ok);
 
 
     }
+    //头像大小10M
+    public  static  final  Integer AVATAR_SIZE=10*1024*1024;
+    // 头像类型
+    public  static  final List<String>  list=new ArrayList<>();
+    static {
+        list.add("image/jpeg");
+        list.add("image/png");
+        list.add("image/bmp");
+        list.add("image/gif");
+
+    }
+
+    @RequestMapping("/changeavatar")
+    public  jsonresult<String> changeavatar(MultipartFile file,HttpSession session)
+    {
+        if (file.isEmpty())
+            throw  new FileEmptyException("文件为空");
+        if (file.getSize()>AVATAR_SIZE)
+            throw  new FileSizeException("文件大小超出限制");
+        String contentType = file.getContentType();
+        if (!list.contains(contentType)) {
+            System.out.println(contentType);
+            throw new FileTypeException("文件类型不匹配");
+        }
+        String realPath = session.getServletContext().getRealPath("upload");
+
+        File dir = new File(realPath);
+        if (!dir.exists())
+            dir.mkdirs();
+        String originalFilename = file.getOriginalFilename();
+
+        System.out.println(originalFilename);
+
+        int i = originalFilename.lastIndexOf(".");
+        String substring = originalFilename.substring(i);
+        String filename= UUID.randomUUID().toString().toUpperCase()+substring;
+
+        File localFile= new File(dir, filename);
+        try {
+            file.transferTo(localFile);
+            Integer uid = getuidsession(session);
+            String username=getnamesession(session);
+            String avatar="/upload/"+filename;
+
+            System.out.println(avatar);
+            System.out.println(localFile.getAbsolutePath());
+            userService.changeAvatar(uid,username,avatar);
+            //头像在电脑上的位置
+
+            return  new jsonresult<>(avatar,ok);
+        }
+
+        catch (FileStateException  e)
+        {
+            throw  new FileStateException("文件状态异常");
+        }
+
+        catch (IOException e) {
+           throw  new FileUploadIOException("文件读写异常");
+        }
+
+
+    }
+
+
 
 
 }

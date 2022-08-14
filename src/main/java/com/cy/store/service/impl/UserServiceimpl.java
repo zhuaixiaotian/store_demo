@@ -118,6 +118,7 @@ public class UserServiceimpl implements IUserService {
             throw  new UpdateException("更新密码错误");
 
         }
+        System.out.println("密码修改成功1");
 
     }
 
@@ -160,6 +161,20 @@ public class UserServiceimpl implements IUserService {
         }
         System.out.println("更新信息成功");
 
+
+
+    }
+
+    @Override
+    public void changeAvatar(Integer uid, String username, String avatar) {
+        User user = usermapper.findByUid(uid);
+        checkUser(user);
+        Integer integer = usermapper.updateAvatarbyuid(uid, username, new Date(), avatar);
+        if (integer!=1)
+        {
+
+            throw  new UpdateException("修改头像失败");
+        }
 
 
     }
