@@ -21,9 +21,7 @@ public class producecontroller extends basecontroller{
    @GetMapping
     public jsonresult<List<Product>>  gethotlist()
     {
-        System.out.println("wddsa");
         List<Product> hotList = productService.findHotList();
-        System.out.println("wddsa");
         return  new jsonresult<>(hotList,ok);
     }
 
@@ -33,6 +31,13 @@ public class producecontroller extends basecontroller{
         Product byId = productService.findById(id);
         return  new jsonresult<>(byId,ok);
 
+    }
+
+    @GetMapping("/newlist")
+    public jsonresult<List<Product>>  getnewList()
+    {
+        List<Product> newList = productService.findNewList();
+        return  new jsonresult<>(newList,ok);
     }
 
 

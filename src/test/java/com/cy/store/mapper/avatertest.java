@@ -1,6 +1,5 @@
 package com.cy.store.mapper;
 
-import com.cy.store.service.IUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

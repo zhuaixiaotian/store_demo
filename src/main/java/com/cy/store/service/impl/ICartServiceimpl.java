@@ -1,4 +1,69 @@
 package com.cy.store.service.impl;
 
-public class ICartServiceimpl {
+import com.cy.store.entity.Cart;
+import com.cy.store.entity.Product;
+
+import com.cy.store.mapper.ProductMapper;
+import com.cy.store.mapper.cartmapper;
+import com.cy.store.service.ICartService;
+import com.cy.store.service.ex.InsertException;
+import com.cy.store.service.ex.UpdateException;
+import com.cy.store.vo.CartVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class ICartServiceimpl implements ICartService {
+    @Autowired
+    private com.cy.store.mapper.cartmapper cartmapper;
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Override
+    public void addnewcart(Integer uid, Integer pid, Integer num, String username) {
+        Cart result = cartmapper.findById(uid, pid);
+        if (result==null)//没有放入过购物车  插入
+        {
+            Cart cart = new Cart();
+            cart.setUid(uid);
+            cart.setPid(pid);
+            cart.setNum(num);
+            Product product = productMapper.findById(pid);
+            cart.setPrice(product.getPrice());
+            cart.setCreatedUser(username);
+            cart.setModifiedUser(username);
+            cart.setCreatedTime(new Date());
+            cart.setModifiedTime(new Date());
+            Integer rows =cartmapper.insert(cart);
+            if (rows!=1)
+            {
+                throw  new InsertException("插入购物车异常");
+            }
+
+
+        }//已经放入购物车 更新
+        else {
+            Integer updatenumbycid = cartmapper.updatenumbycid(result.getCid(),
+                    result.getNum() + num, username, new Date());
+            if (updatenumbycid!=1)
+            {
+
+                throw  new UpdateException("更新购物车异常");
+            }
+
+
+
+        }
+
+
+    }
+
+    @Override
+    public List<CartVO> getvobyuid(Integer uid) {
+
+        return cartmapper.findbyuid(uid);
+    }
 }

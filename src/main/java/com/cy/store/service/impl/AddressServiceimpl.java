@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class AddressServiceimpl implements IAddressService {
     @Autowired
-    private addressmapper addressmapper;
+    private com.cy.store.mapper.addressmapper addressmapper;
     @Value("${user.address.maxcount}")
     private  Integer maxcount;
     @Override

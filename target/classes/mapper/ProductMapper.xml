@@ -15,10 +15,16 @@
     </resultMap>
 
     <select id="findHotList" resultMap="ProductEntityMap">
-        select * from t_product where status=1 order by priority desc limit 0,4
+        select * from t_product where status=1 order by priority desc limit 0,12
     </select>
 
     <select id="findById" resultMap="ProductEntityMap">
         select * from t_product where id=#{id}
+    </select>
+    <select id="findNewList" resultType="com.cy.store.entity.Product">
+
+        select * from t_product where status=1 order by priority  limit 10,12
+
+
     </select>
 </mapper>

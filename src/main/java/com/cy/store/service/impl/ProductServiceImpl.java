@@ -1,7 +1,7 @@
 package com.cy.store.service.impl;
 
 import com.cy.store.entity.Product;
-import com.cy.store.mapper.ProductMapper;
+import  com.cy.store.mapper.ProductMapper;
 import com.cy.store.service.IProductService;
 import com.cy.store.service.ex.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,19 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public List<Product> findHotList() {
         List<Product> list = productMapper.findHotList();
+        for (Product product : list) {
+            product.setPriority(null);
+            product.setCreatedUser(null);
+            product.setCreatedTime(null);
+            product.setModifiedUser(null);
+            product.setModifiedTime(null);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Product> findNewList() {
+        List<Product> list=productMapper.findNewList();
         for (Product product : list) {
             product.setPriority(null);
             product.setCreatedUser(null);

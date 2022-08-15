@@ -147,7 +147,7 @@
 							<input class="btn btn-primary btn-lg btn-block" type="button" value="立即购买">
 						</div>
 						<div class="col-md-12 form-space">
-							<button id="btn-add-to-cart" type="button" class="btn btn-default go-cart"><span class="fa fa-cart-plus"></span> 加入购物车</button>
+							<button id="btn-add-to-cart" type="button" class="btn btn-default "><span class="fa fa-cart-plus"></span> 加入购物车</button>
 							<button id="btn-add-to-collect" type="button" class="btn btn-default"><span class="fa fa-heart-o"></span> 加入收藏</button>
 						</div>
 					</form>
@@ -335,19 +335,23 @@
 			});
 
 			$("#btn-add-to-cart").click(function() {
+				var amount = $("#num").val();
 				$.ajax({
-					url: "/carts/add_to_cart",
-					type: "POST",
-					data: {
-						"pid": id,
-						"amount": $("#num").val()
-					},
-					dataType: "JSON",
+					url: "/carts/"+id+"/"+amount, //resuful风格 参数直接在url中写
+					type: "get",
+					// json传参
+					// data: {
+					// 	"pid": id,
+					// 	"amount": $("#num").val()
+					// },
+					// dataType: "JSON",
 					success: function(json) {
 						if (json.state == 200) {
-							alert("增加成功！");
-						} else {
-							alert("增加失败！" + json.message);
+							location.href = "cart.html";
+						}
+						else  {
+							alert("您的登录信息已经过期，请重新登录！" + json.message);
+							location.href = "login.html";
 						}
 					},
 					error: function(xhr) {

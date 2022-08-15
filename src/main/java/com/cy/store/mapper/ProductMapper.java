@@ -17,4 +17,6 @@ public interface ProductMapper {
      * @return 匹配的商品详情，如果没有匹配的数据则返回null
      */
     Product findById(Integer id);
+
+    List<Product> findNewList();
 }

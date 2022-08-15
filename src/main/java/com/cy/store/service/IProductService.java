@@ -11,6 +11,7 @@ public interface IProductService {
      */
     List<Product> findHotList();
 
+    List<Product> findNewList();
     /**
      * 根据商品id查询商品详情
      * @param id 商品id

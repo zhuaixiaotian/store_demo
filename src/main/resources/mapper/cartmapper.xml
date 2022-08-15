@@ -26,5 +26,24 @@
         select * from t_cart where uid=#{uid} AND pid=#{pid}
 
     </select>
+    <select id="findbyuid" resultType="com.cy.store.vo.CartVO">
+
+        select
+            cid,
+            uid,
+            pid,
+            t_cart.price,
+            t_cart.num,
+            title,
+            t_product.price as realPrice,
+            image
+        from t_cart
+                 left join t_product on t_cart.pid = t_product.id
+        where
+            uid = #{uid}
+        order by
+            t_cart.created_time desc
+
+    </select>
 </mapper>
 

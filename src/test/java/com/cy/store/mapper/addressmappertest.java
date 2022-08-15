@@ -3,7 +3,6 @@ package com.cy.store.mapper;
 import com.cy.store.entity.Address;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.List;
 @SpringBootTest
 public class addressmappertest {
     @Autowired
-    private  addressmapper addressmapper;
+    private com.cy.store.mapper.addressmapper addressmapper;
     @Test
     public  void f()
     {

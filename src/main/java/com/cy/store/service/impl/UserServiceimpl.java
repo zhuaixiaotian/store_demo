@@ -1,6 +1,7 @@
 package com.cy.store.service.impl;
 
 import com.cy.store.entity.User;
+
 import com.cy.store.mapper.usermapper;
 import com.cy.store.service.IUserService;
 import com.cy.store.service.ex.*;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Service
 public class UserServiceimpl implements IUserService {
     @Autowired
-    private usermapper usermapper;
+    private com.cy.store.mapper.usermapper usermapper;
 
 
 
