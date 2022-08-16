@@ -75,7 +75,7 @@ public class usercontroller extends com.cy.store.controller.basecontroller {
 
 
     @RequestMapping("/changeinfo")
-    public jsonresult<Void> changeInfo(HttpSession session , com.cy.store.entity.User user)
+    public jsonresult<Void> changeInfo(HttpSession session , User user)
 
     {
         Integer uid = getuidsession(session);
@@ -146,55 +146,6 @@ public class usercontroller extends com.cy.store.controller.basecontroller {
 
 
     }
-
-//        String parent =
-//                session.getServletContext().getRealPath("/upload");
-//        System.out.println(parent);//调试用
-//
-//        //File对象指向这个路径,通过判断File是否存在得到该路径是否存在
-//        File dir = new File(parent);
-//        if (!dir.exists()) {//检测目录是否存在
-//            dir.mkdirs();//创建当前目录
-//        }
-//
-//        //获取这个文件名称(文件名+后缀,如avatar01.png,不包含父目录结构)用UUID
-//        // 工具生成一个新的字符串作为文件名(好处:避免了因文件名重复发生的覆盖)
-//        String originalFilename = file.getOriginalFilename();
-//        System.out.println("OriginalFilename=" + originalFilename);
-//        int index = originalFilename.lastIndexOf(".");
-//        String suffix = originalFilename.substring(index);
-//        //filename形如SAFS1-56JHIOHI-HIUGHUI-5565TYRF.png
-//        String filename =
-//                UUID.randomUUID().toString().toUpperCase() + suffix;
-//
-//        //在dir目录下创建filename文件(此时是空文件)
-//        File dest = new File(dir, filename);
-//
-//        //java可以把一个文件的数据直接写到同类型的文件中,这里将参数file中的数据写入到空文件dest中
-//        try {
-//            file.transferTo(dest);//transferTo是一个封装的方法,用来将file文件中的数据写入到dest文件
-//
-//            /**
-//             * 先捕获FileStateException再捕获IOException是
-//             * 因为后者包含前者,如果先捕获IOException那么
-//             * FileStateException就永远不可能会被捕获
-//             */
-//        } catch (FileStateException e) {
-//            throw new FileStateException("文件状态异常");
-//        } catch (IOException e) {
-//            //这里不用打印e,而是用自己写的FileUploadIOException类并
-//            // 抛出文件读写异常
-//            throw new FileUploadIOException("文件读写异常");
-//        }
-//
-//        Integer uid = getuidsession(session);
-//        String username = getnamesession(session);
-//        String avatar = "/upload/" + filename;
-//        System.out.println(avatar);
-//        userService.changeAvatar(uid, username, avatar);
-//        //返回用户头像的路径给前端页面,将来用于头像展示使用
-//        return new jsonresult<>(avatar, ok);
-//
 
 
 }

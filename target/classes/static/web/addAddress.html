@@ -150,17 +150,17 @@
 								<div class="form-group">
 									<label class="col-md-2 control-label"><span class="txtred">*</span>省/直辖市：</label>
 									<div class="col-md-3">
-										<select id="province-list" name="provinceCode" class="form-control" data-province="---- 选择省 ----"></select>
+										<select id="province-list" name="provinceName" class="form-control" data-province="---- 选择省 ----"></select>
 									</div>
 									<label class="col-md-2 control-label"><span class="txtred">*</span>城市：</label>
 									<div class="col-md-3">
-										<select id="city-list" name="cityCode" class="form-control" data-city="---- 选择市 ----"></select>
+										<select id="city-list" name="cityName" class="form-control" data-city="---- 选择市 ----"></select>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-md-2 control-label"><span class="txtred">*</span>区县：</label>
 									<div class="col-md-3">
-										<select id="area-list" name="areaCode" class="form-control" data-district="---- 选择区 ----"></select>
+										<select id="area-list" name="areaName" class="form-control" data-district="---- 选择区 ----"></select>
 									</div>
 									<label class="col-md-2 control-label">邮政编码：</label>
 									<div class="col-md-3">
@@ -314,6 +314,7 @@
 						// 已经被占用",data: null}
 						if (resp.state == 200) {
 							alert("新增收货地址成功")
+							location.href = "address.html"
 						} else {
 							alert(resp.msg)
 						}

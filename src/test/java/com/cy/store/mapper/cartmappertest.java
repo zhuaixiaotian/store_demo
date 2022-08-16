@@ -1,11 +1,13 @@
 package com.cy.store.mapper;
 
 import com.cy.store.entity.Cart;
+import com.cy.store.vo.CartVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 public class cartmappertest {
@@ -36,6 +38,22 @@ public class cartmappertest {
 
 
     }
+    @Test
+    public  void findBycId()
+    {
+
+        System.out.println(cartmapper.findbycid(9));
+
+    }
+
+        @Test
+    public  void findlistbycid()
+{
+
+    List<CartVO> findlisbycid = cartmapper.findlisbycid(new Integer[]{24,10,11});
+    System.out.println(findlisbycid.size());
+
+}
 
 
 

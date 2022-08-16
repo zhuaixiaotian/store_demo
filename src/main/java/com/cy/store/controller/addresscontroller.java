@@ -19,6 +19,7 @@ public class addresscontroller extends  basecontroller{
     @RequestMapping("/insert")
     public jsonresult<Void>  addAddress (Address address, HttpSession session)
     {
+        System.out.println(address);
         Integer uid=getuidsession(session);
         String username=getnamesession(session);
         addressService.addnewaddress(uid,username,address);

@@ -14,4 +14,7 @@ public interface cartmapper
     Integer updatenumbycid(@Param("cid") Integer cid, @Param("num") Integer num, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
     Integer insert(Cart cart);
     List<CartVO> findbyuid(@Param("uid") Integer uid);
+    Cart findbycid (@Param("cid") Integer cid);
+    Integer deletebycid (@Param("cid") Integer cid);
+    List<CartVO> findlisbycid(@Param("cids") Integer[] cids);
 }

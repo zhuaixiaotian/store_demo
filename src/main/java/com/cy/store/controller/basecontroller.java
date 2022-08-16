@@ -114,6 +114,14 @@ public class basecontroller {
 
             }
 
+        else if (e instanceof CartNotFoundException)
+
+        {
+            result.setState(7001);
+            System.out.println(e.getMessage());
+            result.setMsg(e.getMessage());
+
+        }
 
 
         return  result;

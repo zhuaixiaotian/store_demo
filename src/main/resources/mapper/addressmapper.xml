@@ -9,8 +9,8 @@
 
     <insert id="insert">
 
-    insert  into t_address values (null , #{uid}, #{name}, #{provinceName}, #{provinceCode}, #{cityName}, #{cityCode}, #{areaName},
-                                   #{areaCode}, #{zip}, #{address}, #{phone}, #{tel}, #{tag}, #{isDefault}, #{createdUser},
+    insert  into t_address values (null , #{uid}, #{name}, #{provinceName}, #{cityName},  #{areaName},
+                                    #{zip}, #{address}, #{phone}, #{tel}, #{tag}, #{isDefault}, #{createdUser},
                                    #{createdTime}, #{modifiedUser}, #{modifiedTime})
 
     </insert>

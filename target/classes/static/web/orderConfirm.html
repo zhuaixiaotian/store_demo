@@ -21,7 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/footer.css" />
 	<link rel="stylesheet" type="text/css" href="../css/orderConfirm.css" />
 	<link rel="stylesheet" type="text/css" href="../css/cart.css" />
-	<script src="../js/orderConfirm.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="../js/orderConfirm.js" type="text/javascript" charset="utf-8"></script>-->
 </head>
 
 <body>
@@ -112,8 +112,8 @@
 		<div class="col-md-12">
 			<form id="form-create-order" role="form">
 				<div class="form-group">
-					<label for="name">
-						<p>选择收货地址：</p>
+
+					<p>选择收货地址：</p>
 					</label>
 					<select name="aid" id="address-list" class="form-control">
 						<option>八戒&nbsp;&nbsp;&nbsp;家&nbsp;&nbsp;&nbsp;北京市房山区高老庄3排6号&nbsp;&nbsp;&nbsp;1380***1234</option>
@@ -249,6 +249,134 @@
 
 </footer>
 <!--页脚结束-->
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		showCartList();
+		showAddressList();
+	});
+
+	function showCartList() {
+
+
+
+		$("#cart-list").empty();
+		$.ajax({
+			url: "/carts",
+			type: "post",
+			data: location.search.substr(1),
+			success: function(json) {
+				if(json.state ==0)
+				{
+					alert("请选择购物车")
+					location.href="cart.html"
+				}
+				 if (json.state == 200) {
+					var list = json.data;
+					console.log(location.search.substr(1));//调试用
+
+					//声明两个变量用于更新"确认订单"页的总件数和总价
+					var allCount = 0;
+					var allPrice = 0;
+
+					for (var i = 0; i < list.length; i++) {
+						var tr = '<tr>\n' +
+								'<td><img src="..#{image}collect.png" class="img-responsive" /></td>\n' +
+								'<td>#{title}</td>\n' +
+								'<td>¥<span>#{price}</span></td>\n' +
+								'<td>#{num}</td>\n' +
+								'<td><span>#{totalPrice}</span></td>\n' +
+								'</tr>';
+						tr = tr.replace("#{image}",list[i].image);
+						tr = tr.replace("#{title}",list[i].title);
+						tr = tr.replace("#{price}",list[i].realPrice);
+						tr = tr.replace("#{num}",list[i].num);
+						tr = tr.replace("#{totalPrice}",list[i].realPrice*list[i].num);
+						$("#cart-list").append(tr);
+
+						//更新"确认订单"页的总件数和总价
+						allCount += list[i].num;
+						allPrice += list[i].realPrice*list[i].num;
+					}
+					$("#all-count").html(allCount);
+					$("#all-price").html(allPrice);
+				}
+			},
+			error: function (xhr) {
+				alert("在确认订单页加载勾选的购物车数据时发生未知的异常"+xhr.status);
+			}
+		});
+	}
+
+	function showAddressList() {
+		$("#address-list").empty();
+		$.ajax({
+			url: "/address",
+			type: "GET",
+			success: function(json) {
+				if (json.state == 200) {
+					var list = json.data;
+					for (var i = 0; i < list.length; i++) {
+
+						/*
+                        value="#{aid}"在该模块没有用,但是扔写上,只要是从数据库查到到的数据,都要让前端页
+                        面的该条数据和id绑定(因为可能干别的什么时需要用到,就比如说下一个"创建订单"模块
+                        就需要根据前端传给后端的aid查询用户选中的是哪一个地址然后将其加入订单表)
+                        * */
+						var opt = '<option value="#{aid}">#{name}&nbsp;&nbsp;&nbsp;#{tag}&nbsp;&nbsp;&nbsp;#{provinceName}#{cityName}#{areaName}#{address}&nbsp;&nbsp;&nbsp;#{tel}</option>';
+						opt = opt.replace("#{aid}",list[i].aid);
+						opt = opt.replace("#{name}",list[i].name);
+						opt = opt.replace("#{tag}",list[i].tag);
+						opt = opt.replace("#{provinceName}",list[i].provinceName);
+						opt = opt.replace("#{cityName}",list[i].cityName);
+						opt = opt.replace("#{areaName}",list[i].areaName);
+						opt = opt.replace("#{address}",list[i].address);
+						opt = opt.replace("#{tel}",list[i].tel);
+
+						$("#address-list").append(opt);
+					}
+				}
+			},
+			error: function (xhr) {
+				alert("在确认订单页加载用户地址时发生未知的异常"+xhr.status);
+			}
+		});
+	}
+
+
+
+
+
+
+	$("#btn-create-order").click(function() {
+		var aid = $("#address-list").val();//12
+		var cids = location.search.substr(1);//cids=4&cids=6&cids=8
+		$.ajax({
+			url: "/orders/"+aid,
+			data: cids,//aid=12&cids=4&cids=6&cids=8
+			type: "GET",
+			dataType: "JSON",
+			success: function(json) {
+				if (json.state == 200) {
+					alert("创建订单成功")
+					location.href = "payment.html";
+				} else {
+					alert("创建订单失败！" + json.message);
+				}
+			},
+			error: function(xhr) {
+				alert("创建订单数据时产生未知的异常" + xhr.status);
+			}
+		});
+	});
+
+
+
+
+
+
+</script>
 </body>
 
 </html>
