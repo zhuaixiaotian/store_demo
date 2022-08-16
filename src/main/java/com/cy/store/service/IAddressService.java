@@ -9,4 +9,5 @@ public interface IAddressService {
    List<Address> getbyuid(Integer uid );
    void  setDefault(Integer aid,Integer uid,String username);
    void deletebyaid(Integer aid,Integer uid,String username);
+   Address getbyaid(Integer aid,Integer uid);
 }

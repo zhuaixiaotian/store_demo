@@ -1,8 +1,11 @@
 package com.cy.store.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**收货地址额实体类*/
+
 public class Address extends BaseEntity {
     private Integer aid;
     private Integer uid;

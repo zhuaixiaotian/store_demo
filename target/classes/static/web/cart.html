@@ -166,7 +166,7 @@
 						</tbody>
 					</table>
 					<div class="total-bar">
-						<a href="javascript:selDelCart()" class="cart-del-sel btn btn-default btn-xs">删除所选商品</a>
+						<a href="javascript:selDelCart(this)" class="cart-del-sel btn btn-default btn-xs">删除所选商品</a>
 						<span class="pull-right">已选商品
 								<span id="selectCount">0</span>件 总价¥
 								<span id="selectTotal">0</span>元
@@ -289,14 +289,15 @@
 							'<td>#{title}#{msg}</td>\n' +
 							'<td>¥<span id="goodsPrice#{cid}">#{singlePrice}</span></td>\n' +
 							'<td>\n' +
-							'<input type="button" value="-" class="num-btn" onclick="reduceNum(1)" />\n' +
+							'<input type="button" value="-" class="num-btn" onclick="reduceNum(#{cid})" />\n' +
 							'<input id="goodsCount#{cid}" type="text" size="2" readonly="readonly" class="num-text" value="#{num}">\n' +
 							'<input class="num-btn" type="button" value="+" onclick="addNum(#{cid})" />\n' +
 							'</td>\n' +
 							'<td><span id="goodsCast#{cid}">#{totalPrice}</span></td>\n' +
 							'<td>\n' +
-							'<input type="button" onclick="delCartItem(this)" class="cart-del btn btn-default btn-xs" value="删除" />\n' +
+							'<input type="button" onclick="delCartItem(#{cid})" class="cart-del btn btn-default btn-xs" value="删除" />\n' +
 							'</td>\n' +
+							'<a href="javascript:selDelCart()" class="cart-del-sel btn btn-default btn-xs">删除所选商品</a>'
 							'</tr>';
 					tr = tr.replaceAll(/#{cid}/g, list[i].cid);
 					tr = tr.replaceAll(/#{image}/g, list[i].image);
@@ -317,6 +318,110 @@
 			}
 		});
 	}
+
+function selDelCart(cids)
+{
+	console.log(location.search.substr(1));
+}
+
+	function addNum(cid) {
+		console.log(cid);
+		$.ajax({
+			url: "/carts/"+cid,
+			type: "get",
+			success: function (json) {
+				if (json.state == 200) {
+					$("#goodsCount"+cid).val(json.data);//字符串+整数cid后结果为字符串
+
+					//更新该商品总价
+					/*
+                    html()方法:
+                    不传参:是获取某个标签内部的内容(文本或标签)
+                    传参:将参数放到标签里面替换掉该标签原有内容
+                    * */
+					var price = $("#goodsPrice"+cid).html();
+					var totalPrice = price * json.data;
+
+					//将商品总价更新到控件中
+					$("#goodsCast"+cid).html(totalPrice);
+				} else {
+					alert("增加购物车商品数量失败"+json.message);
+				}
+			},
+			error: function (xhr) {
+				alert("增加购物车商品数量时产生未知的异常!"+xhr.message);
+			}
+		});
+	}
+	function  delCartItem(cid)
+	{
+		$.ajax({
+			url: "/carts/"+cid,
+			type: "delete",
+			dataType: "JSON",
+			success: function (json) {
+				if (json.state == 200) {
+					alert("删除购物车成功")
+
+					location.href="cart.html";
+				} else {
+					alert("删除购物车失败："+json.message);
+				}
+			},
+			error: function (xhr) {
+				alert("删除购物车时产生未知的异常!"+xhr.message);
+			}
+		});
+
+
+	}
+
+
+
+
+	function reduceNum(cid) {
+
+		$.ajax({
+			url: "/carts/reduce/"+cid,
+			type: "delete",
+			dataType: "JSON",
+			success: function (json) {
+				if (json.state == 200) {
+					if (json.data!=-1) {
+						$("#goodsCount" + cid).val(json.data);//字符串+整数cid后结果为字符串
+						//更新该商品总价
+						/*
+                    html()方法:
+                    不传参:是获取某个标签内部的内容(文本或标签)
+                    传参:将参数放到标签里面替换掉该标签原有内容
+                    * */
+						var price = $("#goodsPrice" + cid).html();
+						var totalPrice = price * json.data;
+
+						//将商品总价更新到控件中
+						$("#goodsCast" + cid).html(totalPrice);
+					}
+					else {
+						alert("购物车清空");
+						location.href = "cart.html";
+					}
+				} else {
+					alert("减少购物车商品数量失败"+json.message);
+				}
+			},
+			error: function (xhr) {
+				alert("减少购物车商品数量时产生未知的异常!"+xhr.message);
+			}
+		});
+	}
+
+
+
+
+
+
+
+
 
 
 </script>

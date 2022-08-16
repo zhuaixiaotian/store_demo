@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.store.mapper.ordermapper">
+
+
+    <insert id="insertorder"  useGeneratedKeys="true" keyProperty="oid">
+        insert into t_order (
+            uid, recv_name, recv_phone, recv_province, recv_city, recv_area, recv_address,
+            total_price,status, order_time, pay_time, created_user, created_time, modified_user,
+            modified_time
+        ) values (
+                     #{uid}, #{recvName}, #{recvPhone}, #{recvProvince}, #{recvCity}, #{recvArea},
+                     #{recvAddress}, #{totalPrice}, #{status}, #{orderTime}, #{payTime}, #{createdUser},
+                     #{createdTime}, #{modifiedUser}, #{modifiedTime}
+                 )
+
+    </insert>
+    <insert id="insertorder_item">
+        insert into t_order_item
+            values (
+                       null , #{oid}, #{pid}, #{title}, #{image}, #{price}, #{num}, #{createdUser},
+                       #{createdTime}, #{modifiedUser}, #{modifiedTime}
+                   )
+
+    </insert>
+</mapper>

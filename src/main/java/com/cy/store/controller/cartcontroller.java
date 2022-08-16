@@ -4,10 +4,7 @@ import com.cy.store.service.ICartService;
 import com.cy.store.util.jsonresult;
 import com.cy.store.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.swing.plaf.PanelUI;
@@ -36,6 +33,48 @@ public class cartcontroller extends basecontroller{
         List<CartVO> getvobyuid = cartService.getvobyuid(getuidsession(session));
         return  new jsonresult<>(getvobyuid,ok);
 
+    }
+
+
+    @GetMapping("/{cid}")
+    public jsonresult<Integer> addnum(@PathVariable Integer cid,HttpSession session)
+    {
+        Integer addnum = cartService.addnum(cid, getuidsession(session), getnamesession(session));
+        return  new jsonresult<>(addnum,ok);
+    }
+
+
+
+
+    @DeleteMapping("/reduce/{cid}")
+    public jsonresult<Integer> reducenum(@PathVariable Integer cid,HttpSession session)
+    {
+
+        Integer reducenum = cartService.reducenum(cid, getuidsession(session), getnamesession(session));
+        return  new jsonresult<>(reducenum,ok);
+
+
+    }
+
+    @DeleteMapping("{cid}")
+    public jsonresult<Void> delete(@PathVariable Integer cid,HttpSession session)
+    {
+
+       cartService.delete(cid, getuidsession(session));
+       return  new jsonresult<>(ok);
+
+
+    }
+    @PostMapping
+    public  jsonresult<List<CartVO>> getvobycids(HttpSession session, Integer[]cids)
+    {
+
+        if (cids==null)
+        {
+            return  new jsonresult<>(null,0);
+        }
+        List<CartVO> getvobycids = cartService.getvobycids(cids, getuidsession(session));
+        return  new jsonresult<>(getvobycids,ok);
     }
 
 

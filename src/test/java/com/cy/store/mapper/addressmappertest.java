@@ -18,8 +18,10 @@ public class addressmappertest {
         Address address = new Address();
         address.setUid(9);
         address.setAddress("wddsasd");
-        Integer insert = addressmapper.insert(address);
-        System.out.println(address);
+        address.setProvinceName("wodsa");
+        address.setCityName("1111111");
+        address.setAreaName("201399");
+        addressmapper.insert(address);
     }
 
     @Test

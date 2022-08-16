@@ -6,13 +6,13 @@ import com.cy.store.entity.Product;
 import com.cy.store.mapper.ProductMapper;
 import com.cy.store.mapper.cartmapper;
 import com.cy.store.service.ICartService;
-import com.cy.store.service.ex.InsertException;
-import com.cy.store.service.ex.UpdateException;
+import com.cy.store.service.ex.*;
 import com.cy.store.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 @Service
@@ -65,5 +65,88 @@ public class ICartServiceimpl implements ICartService {
     public List<CartVO> getvobyuid(Integer uid) {
 
         return cartmapper.findbyuid(uid);
+    }
+
+    public  void checkCart(Cart cart,Integer uid){
+        if (cart==null)
+        {
+
+            throw  new CartNotFoundException("购物车不存在");
+        }
+
+        if (!cart.getUid().equals(uid))
+        {
+            throw  new AccessDeniedException("数据非法访问");
+        }
+    }
+
+
+
+
+    @Override
+    public Integer addnum(Integer cid, Integer uid, String username) {
+
+        Cart findbycid = cartmapper.findbycid(cid);
+        checkCart(findbycid,uid);
+        Integer num=findbycid.getNum()+1;
+        Integer updatenumbycid = cartmapper.updatenumbycid(cid, num, username, new Date());
+        if (updatenumbycid!=1)
+        {
+            throw  new UpdateException("购物车更新异常");
+        }
+        return  num;
+
+    }
+
+    @Override
+    public Integer reducenum(Integer cid, Integer uid, String username) {
+
+
+        Cart findbycid = cartmapper.findbycid(cid);
+        checkCart(findbycid,uid);
+        Integer num=findbycid.getNum()-1;
+        if (num<=0)
+        {
+            Integer deletebycid = cartmapper.deletebycid(cid);
+            if (deletebycid!=1)
+            {
+                throw new DeleteException("购物车删除失败");
+
+            }
+            return  -1;
+        }
+        Integer updatenumbycid = cartmapper.updatenumbycid(cid, num, username, new Date());
+
+        if (updatenumbycid != 1) {
+            throw  new UpdateException("购物车更新异常");
+
+        }
+            return  num;
+
+    }
+
+    @Override
+    public void delete(Integer cid, Integer uid) {
+        Cart findbycid = cartmapper.findbycid(cid);
+        checkCart(findbycid,uid);
+        Integer deletebycid = cartmapper.deletebycid(cid);
+        if (deletebycid!=1)
+        {
+            throw  new DeleteException("购物车删除失败");
+        }
+
+
+    }
+
+    @Override
+    public List<CartVO> getvobycids(Integer[] cids, Integer uid) {
+        List<CartVO> findlisbycid = cartmapper.findlisbycid(cids);
+        for (CartVO cartVO : findlisbycid) {
+            if (!cartVO.getUid().equals(uid))
+                throw  new AccessDeniedException("数据非法访问");
+        }
+        return findlisbycid;
+
+
     }
 }

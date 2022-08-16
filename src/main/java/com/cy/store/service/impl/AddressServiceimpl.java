@@ -22,7 +22,7 @@ public class AddressServiceimpl implements IAddressService {
         Integer countbyuid = addressmapper.countbyuid(uid);
         if (countbyuid>=maxcount)
             throw  new AddressCountLimitException("地址数量超过上限");
-
+        System.out.println(address);
         address.setUid(uid);
         address.setModifiedUser(username);
         address.setCreatedUser(username);
@@ -47,15 +47,7 @@ public class AddressServiceimpl implements IAddressService {
         for ( Address address :list) {
             //address.setAid(null);
             address.setUid(null);
-            address.setProvinceCode(null);
-            address.setProvinceName(null);
-            address.setCityCode(null);
-            address.setCityName(null);
-            address.setAreaCode(null);
-            address.setAreaName(null);
-            address.setZip(null);
-            address.setIsDefault(null);
-            address.setTel(null);
+            address.setIsDefault(null);;
             address.setCreatedTime(null);
             address.setCreatedUser(null);
             address.setModifiedTime(null);
@@ -114,6 +106,20 @@ public class AddressServiceimpl implements IAddressService {
 
 
 
+    }
+
+    @Override
+    public Address getbyaid(Integer aid,Integer uid) {
+        Address address = addressmapper.findbyaid(aid);
+        if (address==null)
+            throw   new AddressNotFoundException("地址不存在");
+        if (!address.getUid().equals(uid))
+            throw  new AccessDeniedException("地址非法访问");
+        address.setCreatedUser(null);
+        address.setCreatedTime(null);
+        address.setModifiedUser(null);
+        address.setModifiedTime(null);
+        return  address;
     }
 
 
