@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
-@Service
 public class AddressServiceimpl implements IAddressService {
     @Autowired
     private com.cy.store.mapper.addressmapper addressmapper;
